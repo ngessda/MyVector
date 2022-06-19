@@ -1,0 +1,8 @@
+D:\C#\MyVector\MyVector\bin\Debug\MyVector.exe.config
+D:\C#\MyVector\MyVector\bin\Debug\MyVector.exe
+D:\C#\MyVector\MyVector\bin\Debug\MyVector.pdb
+D:\C#\MyVector\MyVector\obj\Debug\MyVector.csproj.AssemblyReference.cache
+D:\C#\MyVector\MyVector\obj\Debug\MyVector.csproj.SuggestedBindingRedirects.cache
+D:\C#\MyVector\MyVector\obj\Debug\MyVector.csproj.CoreCompileInputs.cache
+D:\C#\MyVector\MyVector\obj\Debug\MyVector.exe
+D:\C#\MyVector\MyVector\obj\Debug\MyVector.pdb
