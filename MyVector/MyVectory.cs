@@ -158,5 +158,38 @@ namespace MyVector
                 return result;
             }
         }
+        
+        public double Distance(MyVectory b)
+        {
+            if (a.Length != b.length)
+            {
+                throw new ArgumentException("Ты совсем даун?");
+            }
+            else
+            {
+                double res = 0;
+                for (int i = 0; i < b.length; i++)
+                {
+                    res += Math.Pow(a[i], 2) + Math.Pow(b.a[i], 2);
+                }
+                return Math.Sqrt(res);
+            }
+        }
+        public static double Distance(MyVectory a, MyVectory b)
+        {
+            if (a.length != b.length)
+            {
+                throw new ArgumentException("Ты совсем даун?");
+            }
+            else
+            {
+                double res = 0;
+                for (int i = 0; i < b.length; i++)
+                {
+                    res += Math.Pow(a.a[i], 2) + Math.Pow(b.a[i], 2);
+                }
+                return Math.Sqrt(res);
+            }
+        }
     }
 }
