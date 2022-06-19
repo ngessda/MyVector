@@ -10,18 +10,12 @@ namespace MyVector
     {
         static void Main(string[] args)
         {
-            MyVectory mv = new MyVectory(5);
-            MyVectory mv1 = new MyVectory(5);
-            MyVectory ms = mv + mv1;
-            Output(ms);
+            ComplexNumbers cN = new ComplexNumbers(0, 2);
+            ComplexNumbers cS = new ComplexNumbers(1, 4);
+
+            ComplexNumbers res = cN / cS;
+            Console.WriteLine(res);
             Console.ReadKey();
-        }
-        static void Output(MyVectory x)
-        {
-            for (int i = 0; i < x.lengthVector; i++)
-            {
-                Console.WriteLine(x[i]);
-            }
         }
     }
 }
