@@ -8,11 +8,10 @@ namespace MyVector
 {
     public class MyVectory
     {
-        public double[] a;
-        private int length;
+        private double[] a;
         public int lengthVector
         {
-            get { return length; }
+            get { return a.Length; }
         }
 
         public MyVectory()
@@ -22,64 +21,57 @@ namespace MyVector
 
         public MyVectory(int length)
         {
-            this.length = length;
-            CreateRandom(length);
-        }
-        public MyVectory(double[] z)
-        {
-            length = z.Length;
-            a = z;
-        }
-        public MyVectory this [int index]
-        {
-            get
-            {
-                return this[index];
-            }
-        }
-
-        private double[] CreateRandom(int length)
-        {
             Random random = new Random();
             a = new double[length];
             for (int i = 0; i < length; i++)
             {
                 a[i] = random.NextDouble();
             }
-            return a;
+        }
+        public MyVectory(double[] z)
+        {
+            a = new double[z.Length];
+            a = (double[])z.Clone();
+        }
+        public double this [int index]
+        {
+            get
+            {
+                return a[index];
+            }
         }
 
-        public static int[] Arrange(int n)
+        public static MyVectory Arrange(int n)
         {
-            int[] a = new int[n];
+            MyVectory z = new MyVectory(n);
             for (int i = 0; i < n; i++)
             {
-                a[i] = i;
+                z.a[i] = i;
             }
-            return a;
+            return z;
         }
-        public static int[] Zeros(int n)
+        public static MyVectory Zeros(int n)
         {
-            int[] a = new int[n];
+            MyVectory z = new MyVectory(n);
             for (int i = 0; i < n; i++)
             {
-                a[i] = 0;
+                z.a[i] = 0;
             }
-            return a;
+            return z;
         }
-        public static int[] Ones(int n)
+        public static MyVectory Ones(int n)
         {
-            int[] a = new int[n];
+            MyVectory z = new MyVectory(n);
             for (int i = 0; i < n; i++)
             {
-                a[i] = 1;
+                z.a[i] = 1;
             }
-            return a;
+            return z;
         }
         public double Norm()
         {
             double res = 0;
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < lengthVector; i++)
             {
                 res += Math.Pow(a[i], 2);
             }
@@ -88,46 +80,60 @@ namespace MyVector
 
         public static MyVectory operator +(MyVectory a, MyVectory b)
         {
-            MyVectory vs = a;
-            for (int i = 0; i < a.length; i++)
+            if (a.lengthVector != b.lengthVector)
             {
-                vs.a[i] += b.a[i];
+                throw new ArgumentException("Ты совсем даун?");
             }
-            return vs;
+            else
+            {
+                MyVectory vs = new MyVectory(a.lengthVector);
+                for (int i = 0; i < a.lengthVector; i++)
+                {
+                    vs.a[i] = a.a[i] + b.a[i];
+                }
+                return vs;
+            }
         }
         
         public static MyVectory operator -(MyVectory a, MyVectory b)
         {
-            MyVectory vs = a;
-            for (int i = 0; i < a.length; i++)
+            if (a.lengthVector != b.lengthVector)
             {
-                vs.a[i] -= b.a[i];
+                throw new ArgumentException("Ты совсем даун?");
             }
-            return vs;
+            else
+            {
+                MyVectory vs = new MyVectory(a.lengthVector);
+                for (int i = 0; i < a.lengthVector; i++)
+                {
+                    vs.a[i] = a.a[i] - b.a[i];
+                }
+                return vs;
+            }
         }
 
         public static MyVectory operator *(MyVectory a, double b)
         {
-            MyVectory vs = a;
-            for (int i = 0; i < a.length; i++)
+            MyVectory vs = new MyVectory(a.lengthVector);
+            for (int i = 0; i < a.lengthVector; i++)
             {
-                vs.a[i] *= b;
+                vs.a[i] = a.a[i] * b;
             }
             return vs;
         }
 
         public static MyVectory operator *(double b, MyVectory a)
         {
-            MyVectory vs = a;
-            for (int i = 0; i < a.length; i++)
+            MyVectory vs = new MyVectory(a.lengthVector);
+            for (int i = 0; i < a.lengthVector; i++)
             {
-                vs.a[i] *= b;
+                vs.a[i] = a.a[i] * b;
             }
             return vs;
         }
         public double ScalarTimes(MyVectory b)
         {
-            if(a.Length != b.length)
+            if(a.Length != b.lengthVector)
             {
                 throw new ArgumentException("Ты совсем даун?");
             }
@@ -144,14 +150,14 @@ namespace MyVector
 
         public static double ScalarTimes(MyVectory a, MyVectory b)
         {
-            if(a.length != b.length)
+            if(a.lengthVector != b.lengthVector)
             {
                 throw new ArgumentException("Ты совсем даун?");
             }
             else
             {
                 double result = 0;
-                for (int i = 0; i < a.length; i++)
+                for (int i = 0; i < a.lengthVector; i++)
                 {
                     result += a.a[i] * b.a[i];
                 }
@@ -161,32 +167,32 @@ namespace MyVector
         
         public double Distance(MyVectory b)
         {
-            if (a.Length != b.length)
+            if (a.Length != b.lengthVector)
             {
                 throw new ArgumentException("Ты совсем даун?");
             }
             else
             {
                 double res = 0;
-                for (int i = 0; i < b.length; i++)
+                for (int i = 0; i < b.lengthVector; i++)
                 {
-                    res += Math.Pow(a[i], 2) + Math.Pow(b.a[i], 2);
+                    res += Math.Pow(a[i] - b.a[i], 2);
                 }
                 return Math.Sqrt(res);
             }
         }
         public static double Distance(MyVectory a, MyVectory b)
         {
-            if (a.length != b.length)
+            if (a.lengthVector != b.lengthVector)
             {
                 throw new ArgumentException("Ты совсем даун?");
             }
             else
             {
                 double res = 0;
-                for (int i = 0; i < b.length; i++)
+                for (int i = 0; i < b.lengthVector; i++)
                 {
-                    res += Math.Pow(a.a[i], 2) + Math.Pow(b.a[i], 2);
+                    res += Math.Pow(a.a[i] - b.a[i], 2);
                 }
                 return Math.Sqrt(res);
             }
