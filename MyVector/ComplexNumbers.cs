@@ -52,7 +52,7 @@ namespace MyVector
         {
             try
             {
-                if (a.re == 0 || a.im == 0 || b.re == 0 || b.im == 0)
+                if (a.re == 0 && a.im == 0 || b.re == 0 && b.im == 0)
                 {
                     throw new ArgumentException();
                 }
