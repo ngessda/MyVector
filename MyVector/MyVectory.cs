@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MyVector
@@ -33,6 +36,20 @@ namespace MyVector
             a = new double[z.Length];
             a = (double[])z.Clone();
         }
+
+        public MyVectory(string path)
+        {
+            VectSolution(path);
+        }
+        
+        public MyVectory(MyVectory[] vectors)
+        {
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                MyVectory myVectory = vectors[i];
+            }
+        }
+
         public double this [int index]
         {
             get
@@ -147,7 +164,6 @@ namespace MyVector
                 return result;
             }
         }
-
         public static double ScalarTimes(MyVectory a, MyVectory b)
         {
             if(a.lengthVector != b.lengthVector)
@@ -196,6 +212,73 @@ namespace MyVector
                 }
                 return Math.Sqrt(res);
             }
+        }
+        private void VectSolution(string path)
+        {
+            string[] lines = File.ReadAllLines(path);
+            bool counter = true;
+            string[] test;
+            double[] vector;
+            var vectors = new List<MyVectory>();
+            foreach (string line in lines)
+            {
+                test = line.Trim().Split(' ');
+                if (test.Length % 2 == 0)
+                {
+                    continue;
+                }
+                for (int i = 0; i < test.Length; i++)
+                {
+                    if (!double.TryParse(test[i], out var res))
+                    {
+                        counter = false;
+                        break;
+                    }
+                }
+                if (!counter)
+                {
+                    continue;
+                }
+
+                vector = new double[test.Length - 1];
+                for(int i = 0; i < vector.Length; i++)
+                {
+                    vector[i] = double.Parse(test[i + 1]);
+                }
+                MyVectory v = new MyVectory(vector);
+                vectors.Add(v);
+            }
+            MyVectory[] result = new MyVectory[vectors.Count];
+            result = Sort(vectors.ToArray());
+
+            Directory.CreateDirectory(@"D:\testing");
+            FileInfo iF = new FileInfo(@"D:\testing\test.txt");
+            for (int i = 0; i < result.Length; i++)
+            {
+                File.AppendAllText(@"D:\testing\test.txt", result[i].lengthVector.ToString());
+                for (int j = 0; j < result[i].lengthVector; j++)
+                {
+                    File.AppendAllText(@"D:\testing\test.txt", " " + result[i].a[j].ToString());
+                }
+                File.AppendAllText(@"D:\testing\test.txt", "\n");
+            }
+        }
+        private MyVectory[] Sort(MyVectory[] vector)
+        {
+            MyVectory temp;
+            for (int i = 0; i < vector.Length - 1; i++)
+            {
+                for (int j = i + 1; j < vector.Length; j++)
+                {
+                    if(vector[i].Norm() > vector[j].Norm())
+                    {
+                        temp = new MyVectory(vector[i].a);
+                        vector[i] = vector[j];
+                        vector[j] = temp;
+                    }
+                }
+            }
+            return vector;
         }
     }
 }
