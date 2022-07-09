@@ -12,6 +12,7 @@ namespace MyVector
     public class MyVectory
     {
         private double[] a;
+        private bool counter = true;
         public int lengthVector
         {
             get { return a.Length; }
@@ -37,11 +38,11 @@ namespace MyVector
             a = (double[])z.Clone();
         }
 
-        public MyVectory(string path)
+        public MyVectory(string path, string path1)
         {
-            VectSolution(path);
+
         }
-        
+
         public MyVectory(MyVectory[] vectors)
         {
             for (int i = 0; i < vectors.Length; i++)
@@ -50,11 +51,15 @@ namespace MyVector
             }
         }
 
-        public double this [int index]
+        public double this[int index]
         {
             get
             {
                 return a[index];
+            }
+            set
+            {
+                a[index] = value;
             }
         }
 
@@ -111,7 +116,7 @@ namespace MyVector
                 return vs;
             }
         }
-        
+
         public static MyVectory operator -(MyVectory a, MyVectory b)
         {
             if (a.lengthVector != b.lengthVector)
@@ -150,7 +155,7 @@ namespace MyVector
         }
         public double ScalarTimes(MyVectory b)
         {
-            if(a.Length != b.lengthVector)
+            if (a.Length != b.lengthVector)
             {
                 throw new ArgumentException("Ты совсем даун?");
             }
@@ -166,7 +171,7 @@ namespace MyVector
         }
         public static double ScalarTimes(MyVectory a, MyVectory b)
         {
-            if(a.lengthVector != b.lengthVector)
+            if (a.lengthVector != b.lengthVector)
             {
                 throw new ArgumentException("Ты совсем даун?");
             }
@@ -180,7 +185,7 @@ namespace MyVector
                 return result;
             }
         }
-        
+
         public double Distance(MyVectory b)
         {
             if (a.Length != b.lengthVector)
@@ -213,72 +218,33 @@ namespace MyVector
                 return Math.Sqrt(res);
             }
         }
-        private void VectSolution(string path)
+        public override string ToString()
         {
-            string[] lines = File.ReadAllLines(path);
-            bool counter = true;
-            string[] test;
-            double[] vector;
-            var vectors = new List<MyVectory>();
-            foreach (string line in lines)
-            {
-                test = line.Trim().Split(' ');
-                if (test.Length % 2 == 0)
-                {
-                    continue;
-                }
-                for (int i = 0; i < test.Length; i++)
-                {
-                    if (!double.TryParse(test[i], out var res))
-                    {
-                        counter = false;
-                        break;
-                    }
-                }
-                if (!counter)
-                {
-                    continue;
-                }
+            var sb = new StringBuilder(); 
 
-                vector = new double[test.Length - 1];
-                for(int i = 0; i < vector.Length; i++)
-                {
-                    vector[i] = double.Parse(test[i + 1]);
-                }
-                MyVectory v = new MyVectory(vector);
-                vectors.Add(v);
-            }
-            MyVectory[] result = new MyVectory[vectors.Count];
-            result = Sort(vectors.ToArray());
-
-            Directory.CreateDirectory(@"D:\testing");
-            FileInfo iF = new FileInfo(@"D:\testing\test.txt");
-            for (int i = 0; i < result.Length; i++)
+            for (int i = 0; i < this.lengthVector; i++)
             {
-                File.AppendAllText(@"D:\testing\test.txt", result[i].lengthVector.ToString());
-                for (int j = 0; j < result[i].lengthVector; j++)
-                {
-                    File.AppendAllText(@"D:\testing\test.txt", " " + result[i].a[j].ToString());
-                }
-                File.AppendAllText(@"D:\testing\test.txt", "\n");
+                sb.Append(this[i].ToString()).Append(" "); 
             }
+
+            return sb.ToString().Trim(); 
         }
-        private MyVectory[] Sort(MyVectory[] vector)
+
+        public void Sort()
         {
-            MyVectory temp;
-            for (int i = 0; i < vector.Length - 1; i++)
+
+            for (int i = 0; i < this.lengthVector; i++)
             {
-                for (int j = i + 1; j < vector.Length; j++)
-                {
-                    if(vector[i].Norm() > vector[j].Norm())
+                for (int j = 0; j < this.lengthVector - (i + 1); j++)
+                { 
+                    if (this[j] > this[j + 1])
                     {
-                        temp = new MyVectory(vector[i].a);
-                        vector[i] = vector[j];
-                        vector[j] = temp;
+                        var temp = this[j];
+                        this[j] = this[j + 1];
+                        this[j + 1] = temp;
                     }
                 }
             }
-            return vector;
         }
     }
 }

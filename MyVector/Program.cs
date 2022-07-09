@@ -10,7 +10,11 @@ namespace MyVector
     {
         static void Main(string[] args)
         {
-            MyVectory mv = new MyVectory("C:\\Users\\micky\\Downloads\\vectors.txt");
+            var vecs = Class1.ReadVectors("C:\\Users\\micky\\Downloads\\vectors (1).txt");
+
+            Class1.WriteSortedVectors(vecs, "C:\\Users\\micky\\Downloads\\vectors(1).txt");
+
+            Console.ReadKey();
             Console.ReadKey();
         }
     }
